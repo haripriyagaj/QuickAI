@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import Layout from './pages/Layout';
@@ -6,30 +6,36 @@ import Dashboard from './pages/Dashboard';
 import WriteArticle from './pages/WriteArticle';
 import BlogTitles from './pages/BlogTitles';
 import GenerateImages from './pages/GenerateImages';
+import RemoveBackground from './pages/RemoveBackground';
+import RemoveObject from './pages/RemoveObject';
+import ReviewResume from './pages/ReviewResume';
+import Community from './pages/Community';
+import { useAuth } from '@clerk/clerk-react';
 
 const App = () => {
+  const { getToken } = useAuth();
+
+  useEffect(() => {
+    getToken().then((token) => console.log("Clerk Token:", token));
+  }, [getToken]);
+
   return (
-    <div>
-      <Routes>
-        {/* Home Page */}
-        <Route path="/" element={<Home />} />
+    <Routes>
+      {/* Home Page */}
+      <Route path="/" element={<Home />} />
 
-        {/* Layout with nested Dashboard */}
-        <Route path="/ai" element={<Layout />}>
-          <Route index element={<Dashboard />} />
-          <Route path="write-article" element={<WriteArticle />} />
-          <Route path="blog-titles" element={<BlogTitles />} />
-
-          {/* Nested Generate Images routes */}
-          <Route path="generate-images" element={<GenerateImages />}>
-            <Route path="remove-background" element={<GenerateImages />} />
-            <Route path="remove-object" element={<GenerateImages />} />
-            <Route path="review-resume" element={<GenerateImages />} />
-            <Route path="community" element={<GenerateImages />} />
-          </Route>
-        </Route>
-      </Routes>
-    </div>
+      {/* Layout with nested Dashboard */}
+      <Route path="/ai" element={<Layout />}>
+        <Route index element={<Dashboard />} />
+        <Route path="write-article" element={<WriteArticle />} />
+        <Route path="blog-titles" element={<BlogTitles />} />
+        <Route path="generate-images" element={<GenerateImages />} />
+        <Route path="remove-background" element={<RemoveBackground />} />
+        <Route path="remove-object" element={<RemoveObject />} />
+        <Route path="review-resume" element={<ReviewResume />} />
+        <Route path="community" element={<Community />} />
+      </Route>
+    </Routes>
   );
 };
 
